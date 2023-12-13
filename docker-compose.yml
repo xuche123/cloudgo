@@ -8,7 +8,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: [ "sh", "-c", "/cloud-go/bin/migrate up && /cloud-go/bin/api" ]
+    command: [ "sh", "-c", "/cloudgo/bin/migrate up && /cloudgo/bin/api" ]
 
   db:
     image: postgres:alpine

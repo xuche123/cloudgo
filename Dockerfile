@@ -1,6 +1,6 @@
 FROM golang:alpine
 
-WORKDIR /cloud-go
+WORKDIR /cloudgo
 COPY go.mod go.sum ./
 RUN go mod download
 
