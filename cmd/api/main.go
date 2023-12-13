@@ -2,22 +2,24 @@ package main
 
 import (
 	"errors"
+	"fmt"
+	"github.com/xuche123/cloudgo/config"
 	"io"
 	"log"
 	"net/http"
-	"time"
 )
 
 func main() {
+	c := config.New()
 	mux := http.NewServeMux()
 	mux.HandleFunc("/hello", hello)
 
 	s := &http.Server{
-		Addr:         ":8080",
+		Addr:         fmt.Sprintf(":%d", c.Server.Port),
 		Handler:      mux,
-		ReadTimeout:  2 * time.Second,
-		WriteTimeout: 2 * time.Second,
-		IdleTimeout:  5 * time.Second,
+		ReadTimeout:  c.Server.TimeoutRead,
+		WriteTimeout: c.Server.TimeoutWrite,
+		IdleTimeout:  c.Server.TimeoutIdle,
 	}
 
 	log.Println("Starting server on :8080")

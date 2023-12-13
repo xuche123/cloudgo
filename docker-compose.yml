@@ -2,8 +2,13 @@ version: '3'
 services:
   app:
     build: .
+    env_file: .env
     ports:
       - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: [ "sh", "-c", "/cloud-go/bin/migrate up && /cloud-go/bin/api" ]
 
   db:
     image: postgres:alpine
@@ -13,4 +18,9 @@ services:
       POSTGRES_DB: cloudgo
     ports:
         - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U cloudgo -d cloudgo" ]
+      interval: 3s
+      timeout: 5s
+      retries: 5
     restart: always
